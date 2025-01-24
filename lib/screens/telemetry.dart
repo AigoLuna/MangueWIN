@@ -21,69 +21,6 @@ List<int> buffer = [];
 bool leituraAtiva = true;
 
 // Variáveis para armazenamento de dados
-int acc_x = 0;
-int acc_y = 0;
-int acc_z = 0;
-int dps_x = 0;
-int dps_y = 0;
-int dps_z = 0;
-int rpm = 0;
-int speed = 0;
-int temperature = 0;
-int flags = 0;
-int soc = 0;
-int cvt = 23;
-int sat = 0;
-double roundedValue = 0.0;
-
-// Valores de controle para o pacote
-int value1 = 0,
-    value2 = 0,
-    value3 = 0,
-    value4 = 0,
-    value5 = 0,
-    value6 = 0,
-    value7 = 0,
-    value8 = 0,
-    value9 = 0,
-    value10 = 0;
-int value11 = 0,
-    value12 = 0,
-    value13 = 0,
-    value14 = 0,
-    value15 = 0,
-    value16 = 0,
-    value17 = 0,
-    value18 = 0,
-    value19 = 0,
-    value20 = 0;
-int value21 = 0,
-    value22 = 0,
-    value23 = 0,
-    value24 = 0,
-    value25 = 0,
-    value26 = 0,
-    value27 = 0,
-    value28 = 0,
-    value29 = 0,
-    value30 = 0;
-int value31 = 0,
-    value32 = 0,
-    value33 = 0,
-    value34 = 0,
-    value35 = 0,
-    value36 = 0,
-    value37 = 0,
-    value38 = 0,
-    value39 = 0,
-    value40 = 0;
-int value41 = 0,
-    value42 = 0,
-    value43 = 0,
-    value44 = 0,
-    value45 = 0,
-    value46 = 0,
-    value47 = 0;
 
 class TelemetryScreen extends StatefulWidget {
   const TelemetryScreen({super.key});
@@ -97,6 +34,70 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 11,
   );
+
+  int acc_x = 0;
+  int acc_y = 0;
+  int acc_z = 0;
+  int dps_x = 0;
+  int dps_y = 0;
+  int dps_z = 0;
+  int rpm = 0;
+  int speed = 0;
+  int temperature = 0;
+  int flags = 0;
+  int soc = 0;
+  int cvt = 23;
+  int sat = 0;
+  double roundedValue = 0.0;
+
+// Valores de controle para o pacote
+  int value1 = 0,
+      value2 = 0,
+      value3 = 0,
+      value4 = 0,
+      value5 = 0,
+      value6 = 0,
+      value7 = 0,
+      value8 = 0,
+      value9 = 0,
+      value10 = 0;
+  int value11 = 0,
+      value12 = 0,
+      value13 = 0,
+      value14 = 0,
+      value15 = 0,
+      value16 = 0,
+      value17 = 0,
+      value18 = 0,
+      value19 = 0,
+      value20 = 0;
+  int value21 = 0,
+      value22 = 0,
+      value23 = 0,
+      value24 = 0,
+      value25 = 0,
+      value26 = 0,
+      value27 = 0,
+      value28 = 0,
+      value29 = 0,
+      value30 = 0;
+  int value31 = 0,
+      value32 = 0,
+      value33 = 0,
+      value34 = 0,
+      value35 = 0,
+      value36 = 0,
+      value37 = 0,
+      value38 = 0,
+      value39 = 0,
+      value40 = 0;
+  int value41 = 0,
+      value42 = 0,
+      value43 = 0,
+      value44 = 0,
+      value45 = 0,
+      value46 = 0,
+      value47 = 0;
 
   // Função para converter 8 bytes para um double (float64)
   double convertBytesToDouble(
@@ -167,24 +168,24 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
         endian: Endian.little);
     roundedValue = (valueLittleEndian * 10000).roundToDouble() / 10000;
 
-    // Debug de todas as variáveis (opcional)
-    // debugPrint('acc_x: $acc_x');
-    // debugPrint('acc_y: $acc_y');
-    // debugPrint('acc_z: $acc_z');
-    // debugPrint('dps_x: $dps_x');
-    // debugPrint('dps_y: $dps_y');
-    // debugPrint('dps_z: $dps_z');
-    // debugPrint('rpm: $rpm');
-    // debugPrint('speed: $speed');
-    // debugPrint('temperature: $temperature');
-    // debugPrint('flags: $flags');
-    // debugPrint('soc: $soc');
-    // debugPrint('cvt: $cvt');
-    // debugPrint('voltage: $roundedValue');
-    // debugPrint('latitude: $latitude');
-    // debugPrint('longitude: $longitude');
-    // debugPrint('timestamp: $timestamp');
-    // debugPrint('sat:$sat');
+    //Debug de todas as variáveis (opcional)
+    debugPrint('acc_x: $acc_x');
+    debugPrint('acc_y: $acc_y');
+    debugPrint('acc_z: $acc_z');
+    debugPrint('dps_x: $dps_x');
+    debugPrint('dps_y: $dps_y');
+    debugPrint('dps_z: $dps_z');
+    debugPrint('rpm: $rpm');
+    debugPrint('speed: $speed');
+    debugPrint('temperature: $temperature');
+    debugPrint('flags: $flags');
+    debugPrint('soc: $soc');
+    debugPrint('cvt: $cvt');
+    debugPrint('voltage: $roundedValue');
+    debugPrint('latitude: $latitude');
+    debugPrint('longitude: $longitude');
+    debugPrint('timestamp: $timestamp');
+    debugPrint('sat:$sat');
   }
 
   @override
@@ -194,13 +195,15 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
     List<String> availablePorts = SerialPort.availablePorts;
     debugPrint('Available ports: $availablePorts');
 
-    String targetPort = 'COM13';
+    String targetPort = 'COM4';
     if (availablePorts.contains(targetPort)) {
       debugPrint('Found port: $targetPort');
-      port = SerialPort(targetPort);
-      isOpen = port.openReadWrite();
 
-      if (isOpen) {
+      // Inicialize a variável port dentro de uma condição segura
+      port = SerialPort(targetPort);
+
+      // Verifique se a porta foi aberta com sucesso
+      if (port.openReadWrite()) {
         debugPrint('Port $targetPort opened successfully.');
         config = SerialPortConfig();
         config.baudRate = 115200;
@@ -221,18 +224,43 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
   // Método para ler os dados da porta serial
   void readData() {
     try {
-      final data = port.read(port.bytesAvailable);
-
-      if (data.isNotEmpty) {
+      if (port.bytesAvailable > 0) {
+        final data = port.read(port.bytesAvailable);
+        debugPrint('Raw data received: $data');
         buffer.addAll(data);
+        debugPrint('acc_x: $acc_x');
+        debugPrint('acc_y: $acc_y');
+        debugPrint('acc_z: $acc_z');
+        debugPrint('dps_x: $dps_x');
+        debugPrint('dps_y: $dps_y');
+        debugPrint('dps_z: $dps_z');
+        debugPrint('rpm: $rpm');
+        debugPrint('speed: $speed');
+        debugPrint('temperature: $temperature');
+        debugPrint('flags: $flags');
+        debugPrint('soc: $soc');
+        debugPrint('cvt: $cvt');
+        debugPrint('voltage: $roundedValue');
+        //debugPrint('latitude: $latitude');
+        //debugPrint('longitude: $longitude');
+        //debugPrint('timestamp: $timestamp');
+        debugPrint('sat:$sat');
 
-        // Verifica se o buffer tem dados suficientes
-        if (buffer.length >= 50) {
-          processPacket(buffer);
-          buffer.clear(); // Limpa o buffer após o processamento
+        // Procura por pacotes válidos no buffer
+        while (buffer.length >= 47) {
+          // Verifica o início e o fim do pacote
+          if (buffer[0] == 11 && buffer[46] == 255) {
+            // Extrai os 47 bytes e processa o pacote
+            final packet = buffer.sublist(0, 47);
+            processPacket(packet);
+            buffer.removeRange(0, 47); // Remove o pacote processado do buffer
+          } else {
+            // Remove o primeiro byte do buffer se o pacote não for válido
+            buffer.removeAt(0);
+          }
         }
       } else {
-        buffer.clear(); // Limpa o buffer se não houver dados
+        debugPrint('No data available to read.');
       }
     } catch (e) {
       debugPrint('Error reading data: $e');
@@ -243,7 +271,10 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
   void dispose() {
     super.dispose();
     // Libere a porta serial quando o widget for descartado
-    port.close();
+    if (port.isOpen) {
+      port.close();
+      debugPrint('Port closed.');
+    }
   }
 
   // ignore: unused_field

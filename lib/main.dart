@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mangueweb/cubit/live_cubit.dart';
 import 'package:mangueweb/routes.dart';
 
-
-
 void main() {
   runApp(const MyApp());
 }
@@ -20,7 +18,6 @@ class MyApp extends StatelessWidget {
             create: (context) => LiveCubit(),
           )
         ],
-    
         child: const MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'MangueWeb',
