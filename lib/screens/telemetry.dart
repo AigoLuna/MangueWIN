@@ -12,94 +12,82 @@ import 'package:mangueweb/screens/live_screen.dart';
 import 'package:mangueweb/screens/settings.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-// Variáveis globais
+//import 'package:embedded_serialport/embedded_serialport.dart';(incompativel com windows)
+
 int spotIndex = 0;
+
 late SerialPort port;
 late bool isOpen;
 late SerialPortConfig config;
 List<int> buffer = [];
 bool leituraAtiva = true;
 
-// Variáveis para armazenamento de dados
+int acc_x = 0;
+int acc_y = 0;
+int acc_z = 0;
+int dps_x = 0;
+int dps_y = 0;
+int dps_z = 0;
+int rpm = 0;
+int speed = 0;
+int temperature = 0;
+int flags = 0;
+int soc = 0;
+int cvt = 0;
+int sat = 0;
+double roundedValue = 0.0;
 
-class TelemetryScreen extends StatefulWidget {
-  const TelemetryScreen({super.key});
+int value1 = 0,
+    value2 = 0,
+    value3 = 0,
+    value4 = 0,
+    value5 = 0,
+    value6 = 0,
+    value7 = 0,
+    value8 = 0,
+    value9 = 0,
+    value10 = 0;
+int value11 = 0,
+    value12 = 0,
+    value13 = 0,
+    value14 = 0,
+    value15 = 0,
+    value16 = 0,
+    value17 = 0,
+    value18 = 0,
+    value19 = 0,
+    value20 = 0;
+int value21 = 0,
+    value22 = 0,
+    value23 = 0,
+    value24 = 0,
+    value25 = 0,
+    value26 = 0,
+    value27 = 0,
+    value28 = 0,
+    value29 = 0,
+    value30 = 0;
+int value31 = 0,
+    value32 = 0,
+    value33 = 0,
+    value34 = 0,
+    value35 = 0,
+    value36 = 0,
+    value37 = 0,
+    value38 = 0,
+    value39 = 0,
+    value40 = 0;
+int value41 = 0,
+    value42 = 0,
+    value43 = 0,
+    value44 = 0,
+    value45 = 0,
+    value46 = 0,
+    value47 = 0;
 
-  @override
-  State<TelemetryScreen> createState() => _TelemetryScreenState();
-}
+void processPacket(List<int> packet) {
+  debugPrint('Processing packet: $packet');
 
-class _TelemetryScreenState extends State<TelemetryScreen> {
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 11,
-  );
-
-  int acc_x = 0;
-  int acc_y = 0;
-  int acc_z = 0;
-  int dps_x = 0;
-  int dps_y = 0;
-  int dps_z = 0;
-  int rpm = 0;
-  int speed = 0;
-  int temperature = 0;
-  int flags = 0;
-  int soc = 0;
-  int cvt = 23;
-  int sat = 0;
-  double roundedValue = 0.0;
-
-// Valores de controle para o pacote
-  int value1 = 0,
-      value2 = 0,
-      value3 = 0,
-      value4 = 0,
-      value5 = 0,
-      value6 = 0,
-      value7 = 0,
-      value8 = 0,
-      value9 = 0,
-      value10 = 0;
-  int value11 = 0,
-      value12 = 0,
-      value13 = 0,
-      value14 = 0,
-      value15 = 0,
-      value16 = 0,
-      value17 = 0,
-      value18 = 0,
-      value19 = 0,
-      value20 = 0;
-  int value21 = 0,
-      value22 = 0,
-      value23 = 0,
-      value24 = 0,
-      value25 = 0,
-      value26 = 0,
-      value27 = 0,
-      value28 = 0,
-      value29 = 0,
-      value30 = 0;
-  int value31 = 0,
-      value32 = 0,
-      value33 = 0,
-      value34 = 0,
-      value35 = 0,
-      value36 = 0,
-      value37 = 0,
-      value38 = 0,
-      value39 = 0,
-      value40 = 0;
-  int value41 = 0,
-      value42 = 0,
-      value43 = 0,
-      value44 = 0,
-      value45 = 0,
-      value46 = 0,
-      value47 = 0;
-
-  // Função para converter 8 bytes para um double (float64)
   double convertBytesToDouble(
       int b0, int b1, int b2, int b3, int b4, int b5, int b6, int b7) {
     final byteData = ByteData(8);
@@ -111,10 +99,10 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
     byteData.setInt8(5, b5);
     byteData.setInt8(6, b6);
     byteData.setInt8(7, b7);
+
     return byteData.getFloat64(0, Endian.little);
   }
 
-  // Função para converter 4 bytes para um float (float32)
   double bytesToFloat(int value22, int value23, int value24, int value25,
       {Endian endian = Endian.little}) {
     ByteData byteData = ByteData(4);
@@ -129,63 +117,236 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
     return byteData.getFloat32(0, endian);
   }
 
-  // Método para processar o pacote de dados
-  void processPacket(List<int> packet) {
-    debugPrint('Processing packet: $packet');
+  acc_x = (value3 << 8) | value2;
+  acc_y = (value5 << 8) | value4;
+  acc_z = (value7 << 8) | value6;
+  dps_x = (value9 << 8) | value8;
+  dps_y = (value11 << 8) | value10;
+  dps_z = (value13 << 8) | value12;
+  rpm = (value15 << 8) | value14;
+  speed = (value17 << 8) | value16;
+  double latitude = convertBytesToDouble(packet[25], packet[26], packet[27],
+      packet[28], packet[29], packet[30], packet[31], packet[32]);
 
-    // Combine os valores para formar os outros inteiros
-    acc_x = (packet[2] << 8) | packet[3];
-    acc_y = (packet[4] << 8) | packet[5];
-    acc_z = (packet[6] << 8) | packet[7];
-    dps_x = (packet[8] << 8) | packet[9];
-    dps_y = (packet[10] << 8) | packet[11];
-    dps_z = (packet[12] << 8) | packet[13];
-    rpm = (packet[14] << 8) | packet[15];
-    speed = (packet[16] << 8) | packet[17];
+  double longitude = convertBytesToDouble(packet[33], packet[34], packet[35],
+      packet[36], packet[37], packet[38], packet[39], packet[40]);
+  int timestamp =
+      (value42) | (value43 << 8) | (value44 << 16) | (value45 << 24);
+  double valueLittleEndian =
+      bytesToFloat(value22, value23, value24, value25, endian: Endian.little);
+  roundedValue = (valueLittleEndian * 10000).roundToDouble() / 10000;
 
-    // Valores de 8 bits (diretos)
-    temperature = packet[18];
-    flags = packet[19];
-    soc = packet[20];
-    cvt = packet[21];
-    sat = packet[46];
+  temperature = value18;
+  flags = value19;
+  soc = value20;
+  cvt = value21;
+  sat = value46;
 
-    // Valores de latitude e longitude (em formato double)
-    double latitude = convertBytesToDouble(packet[25], packet[26], packet[27],
-        packet[28], packet[29], packet[30], packet[31], packet[32]);
-    double longitude = convertBytesToDouble(packet[33], packet[34], packet[35],
-        packet[36], packet[37], packet[38], packet[39], packet[40]);
+  debugPrint('acc_x: $acc_x');
+  debugPrint('acc_y: $acc_y');
+  debugPrint('acc_z: $acc_z');
+  debugPrint('dps_x: $dps_x');
+  debugPrint('dps_y: $dps_y');
+  debugPrint('dps_z: $dps_z');
+  debugPrint('rpm: $rpm');
+  debugPrint('speed: $speed');
+  debugPrint('temperature: $temperature');
+  debugPrint('flags: $flags');
+  debugPrint('soc: $soc');
+  debugPrint('cvt: $cvt');
+  debugPrint('volt: $roundedValue');
+  debugPrint('latitude: $latitude');
+  debugPrint('longitude: $longitude');
+  debugPrint('timestamp: $timestamp');
+  debugPrint('sat: $sat');
+}
 
-    // Valores para o timestamp (em formato int32)
-    int timestamp = (packet[42]) |
-        (packet[43] << 8) |
-        (packet[44] << 16) |
-        (packet[45] << 24);
+class TelemetryScreen extends StatefulWidget {
+  const TelemetryScreen({Key? key}) : super(key: key);
 
-    // Calculando o valor da voltagem (float)
-    double valueLittleEndian = bytesToFloat(
-        packet[22], packet[23], packet[24], packet[25],
-        endian: Endian.little);
-    roundedValue = (valueLittleEndian * 10000).roundToDouble() / 10000;
+  @override
+  State<TelemetryScreen> createState() => _TelemetryScreenState();
+}
 
-    //Debug de todas as variáveis (opcional)
-    debugPrint('acc_x: $acc_x');
-    debugPrint('acc_y: $acc_y');
-    debugPrint('acc_z: $acc_z');
-    debugPrint('dps_x: $dps_x');
-    debugPrint('dps_y: $dps_y');
-    debugPrint('dps_z: $dps_z');
-    debugPrint('rpm: $rpm');
-    debugPrint('speed: $speed');
-    debugPrint('temperature: $temperature');
-    debugPrint('flags: $flags');
-    debugPrint('soc: $soc');
-    debugPrint('cvt: $cvt');
-    debugPrint('voltage: $roundedValue');
-    debugPrint('latitude: $latitude');
-    debugPrint('longitude: $longitude');
-    debugPrint('timestamp: $timestamp');
-    debugPrint('sat:$sat');
+class _TelemetryScreenState extends State<TelemetryScreen> {
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 11,
+  );
+
+  void readData() {
+    Timer.periodic(Duration(seconds: 1), (timer) async {
+      try {
+        final data = await port.read(port.bytesAvailable);
+
+        if (data.isNotEmpty) {
+          setState(() {
+            debugPrint("Valor de cvt: $cvt");
+          });
+
+          String receivedData = String.fromCharCodes(data);
+          buffer.addAll(data);
+
+          if (buffer.length >= 50) {
+            for (int i = 0; i < 50; i++) {
+              if (i < buffer.length) {
+                switch (i) {
+                  case 0:
+                    value1 = buffer[i];
+                    break;
+                  case 1:
+                    value2 = buffer[i];
+                    break;
+                  case 2:
+                    value3 = buffer[i];
+                    break;
+                  case 3:
+                    value4 = buffer[i];
+                    break;
+                  case 4:
+                    value5 = buffer[i];
+                    break;
+                  case 5:
+                    value6 = buffer[i];
+                    break;
+                  case 6:
+                    value7 = buffer[i];
+                    break;
+                  case 7:
+                    value8 = buffer[i];
+                    break;
+                  case 8:
+                    value9 = buffer[i];
+                    break;
+                  case 9:
+                    value10 = buffer[i];
+                    break;
+                  case 10:
+                    value11 = buffer[i];
+                    break;
+                  case 11:
+                    value12 = buffer[i];
+                    break;
+                  case 12:
+                    value13 = buffer[i];
+                    break;
+                  case 13:
+                    value14 = buffer[i];
+                    break;
+                  case 14:
+                    value15 = buffer[i];
+                    break;
+                  case 15:
+                    value16 = buffer[i];
+                    break;
+                  case 16:
+                    value17 = buffer[i];
+                    break;
+                  case 17:
+                    value18 = buffer[i];
+                    break;
+                  case 18:
+                    value19 = buffer[i];
+                    break;
+                  case 19:
+                    value20 = buffer[i];
+                    break;
+                  case 20:
+                    value21 = buffer[i];
+                    break;
+                  case 21:
+                    value22 = buffer[i];
+                    break;
+                  case 22:
+                    value23 = buffer[i];
+                    break;
+                  case 23:
+                    value24 = buffer[i];
+                    break;
+                  case 24:
+                    value25 = buffer[i];
+                    break;
+                  case 25:
+                    value26 = buffer[i];
+                    break;
+                  case 26:
+                    value27 = buffer[i];
+                    break;
+                  case 27:
+                    value28 = buffer[i];
+                    break;
+                  case 28:
+                    value29 = buffer[i];
+                    break;
+                  case 30:
+                    value31 = buffer[i];
+                    break;
+                  case 31:
+                    value32 = buffer[i];
+                    break;
+                  case 32:
+                    value33 = buffer[i];
+                    break;
+                  case 33:
+                    value34 = buffer[i];
+                    break;
+                  case 34:
+                    value35 = buffer[i];
+                    break;
+                  case 35:
+                    value36 = buffer[i];
+                    break;
+                  case 36:
+                    value37 = buffer[i];
+                    break;
+                  case 37:
+                    value38 = buffer[i];
+                    break;
+                  case 38:
+                    value39 = buffer[i];
+                    break;
+                  case 39:
+                    value40 = buffer[i];
+                    break;
+                  case 40:
+                    value41 = buffer[i];
+                    break;
+                  case 41:
+                    value42 = buffer[i];
+                    break;
+                  case 42:
+                    value43 = buffer[i];
+                    break;
+                  case 43:
+                    value44 = buffer[i];
+                    break;
+                  case 44:
+                    value45 = buffer[i];
+                    break;
+                  case 45:
+                    value46 = buffer[i];
+                    break;
+                  case 46:
+                    value47 = buffer[i];
+                    break;
+                  case 47:
+
+                  // Continue similarly for all other indices
+                  default:
+                    break;
+                }
+              }
+            }
+            processPacket(buffer.sublist(0, 50));
+            buffer.removeRange(0, 50);
+          }
+        } else {
+          buffer.clear();
+        }
+      } catch (e) {
+        debugPrint('Erro ao ler dados: $e');
+      }
+    });
   }
 
   @override
@@ -195,85 +356,24 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
     List<String> availablePorts = SerialPort.availablePorts;
     debugPrint('Available ports: $availablePorts');
 
-    String targetPort = 'COM4';
+    String targetPort = 'COM6';
     if (availablePorts.contains(targetPort)) {
       debugPrint('Found port: $targetPort');
-
-      // Inicialize a variável port dentro de uma condição segura
       port = SerialPort(targetPort);
+      isOpen = port.openReadWrite();
 
-      // Verifique se a porta foi aberta com sucesso
-      if (port.openReadWrite()) {
+      if (isOpen) {
         debugPrint('Port $targetPort opened successfully.');
         config = SerialPortConfig();
         config.baudRate = 115200;
         port.config = config;
 
-        // Configuração do timer para ler os dados periodicamente
-        Timer.periodic(Duration(seconds: 1), (timer) {
-          readData();
-        });
+        readData();
       } else {
         debugPrint('Failed to open port $targetPort.');
       }
     } else {
       debugPrint('Port $targetPort not available.');
-    }
-  }
-
-  // Método para ler os dados da porta serial
-  void readData() {
-    try {
-      if (port.bytesAvailable > 0) {
-        final data = port.read(port.bytesAvailable);
-        debugPrint('Raw data received: $data');
-        buffer.addAll(data);
-        debugPrint('acc_x: $acc_x');
-        debugPrint('acc_y: $acc_y');
-        debugPrint('acc_z: $acc_z');
-        debugPrint('dps_x: $dps_x');
-        debugPrint('dps_y: $dps_y');
-        debugPrint('dps_z: $dps_z');
-        debugPrint('rpm: $rpm');
-        debugPrint('speed: $speed');
-        debugPrint('temperature: $temperature');
-        debugPrint('flags: $flags');
-        debugPrint('soc: $soc');
-        debugPrint('cvt: $cvt');
-        debugPrint('voltage: $roundedValue');
-        //debugPrint('latitude: $latitude');
-        //debugPrint('longitude: $longitude');
-        //debugPrint('timestamp: $timestamp');
-        debugPrint('sat:$sat');
-
-        // Procura por pacotes válidos no buffer
-        while (buffer.length >= 47) {
-          // Verifica o início e o fim do pacote
-          if (buffer[0] == 11 && buffer[46] == 255) {
-            // Extrai os 47 bytes e processa o pacote
-            final packet = buffer.sublist(0, 47);
-            processPacket(packet);
-            buffer.removeRange(0, 47); // Remove o pacote processado do buffer
-          } else {
-            // Remove o primeiro byte do buffer se o pacote não for válido
-            buffer.removeAt(0);
-          }
-        }
-      } else {
-        debugPrint('No data available to read.');
-      }
-    } catch (e) {
-      debugPrint('Error reading data: $e');
-    }
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    // Libere a porta serial quando o widget for descartado
-    if (port.isOpen) {
-      port.close();
-      debugPrint('Port closed.');
     }
   }
 
@@ -787,46 +887,46 @@ class _TelemetryScreenState extends State<TelemetryScreen> {
                                               ),
                                             ),
                                           ),
-                                          InkWell(
-                                            onTap: () {
-                                              spotIndex = 6;
-                                              Navigator.pushNamed(
-                                                  context, 'graph');
-                                            },
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      16, 0, 16, 0),
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "${(curentSpots.last.y * 1000).round()} mA", // Your text here
-                                                    style: const TextStyle(
-                                                      fontSize: 32,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontFamily: 'Roboto',
-                                                      color: Color.fromRGBO(
-                                                          5, 24, 154, 1),
-                                                    ),
-                                                  ),
-                                                  const Text(
-                                                    "Corrente", // Your text here
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontFamily: 'Roboto',
-                                                      color: Color.fromRGBO(
-                                                          130, 130, 130, 1),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
+                                          //InkWell(
+                                          //  onTap: () {
+                                          //    spotIndex = 6;
+                                          //    Navigator.pushNamed(
+                                          //        context, 'graph');
+                                          //  },
+                                          //child: Padding(
+                                          //  padding:
+                                          //      const EdgeInsets.fromLTRB(
+                                          //          16, 0, 16, 0),
+                                          //  child: Column(
+                                          //    crossAxisAlignment:
+                                          //        CrossAxisAlignment.start,
+                                          //    children: [
+                                          //      Text(
+                                          //        "${(curentSpots.last.y * 1000).round()} mA", // Your text here
+                                          //        style: const TextStyle(
+                                          //          fontSize: 32,
+                                          //          fontWeight:
+                                          //              FontWeight.w500,
+                                          //          fontFamily: 'Roboto',
+                                          //          color: Color.fromRGBO(
+                                          //              5, 24, 154, 1),
+                                          //        ),
+                                          //      ),
+                                          //      const Text(
+                                          //        "Corrente", // Your text here
+                                          //        style: TextStyle(
+                                          //          fontSize: 16,
+                                          //          fontWeight:
+                                          //              FontWeight.w500,
+                                          //          fontFamily: 'Roboto',
+                                          //          color: Color.fromRGBO(
+                                          //              130, 130, 130, 1),
+                                          //        ),
+                                          //      ),
+                                          //    ],
+                                          //  ),
+                                          //),
+                                          //),
                                         ],
                                       )
                                     ],
